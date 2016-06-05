@@ -9,10 +9,16 @@ func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
+const (
+	MONK_NUM    = 5
+	MONSTER_NUM = 5
+	BOAT_CAP    = 3
+)
+
 func main() {
 	init_status := Status{
-		Monk:      [2]int{3, 0},
-		Monster:   [2]int{3, 0},
+		Monk:      [2]int{MONK_NUM, 0},
+		Monster:   [2]int{MONSTER_NUM, 0},
 		Direction: true,
 		History:   map[string]bool{},
 	}
@@ -21,8 +27,8 @@ func main() {
 	log.Println("find", len(possible_solutions), "solutions")
 	for i, solution := range possible_solutions {
 		status := Status{
-			Monk:      [2]int{3, 0},
-			Monster:   [2]int{3, 0},
+			Monk:      [2]int{MONK_NUM, 0},
+			Monster:   [2]int{MONSTER_NUM, 0},
 			Direction: true,
 		}
 		log.Println("=========== solution", i, "===========")
@@ -126,9 +132,9 @@ func (s *Status) FindSolutions() []ActionList {
 
 func (s Status) End() bool {
 	if s.Monk[0] == 0 &&
-		s.Monk[1] == 3 &&
+		s.Monk[1] == MONK_NUM &&
 		s.Monster[0] == 0 &&
-		s.Monster[1] == 3 &&
+		s.Monster[1] == MONSTER_NUM &&
 		!s.Direction {
 		log.Println("finish job!")
 		return true
@@ -149,7 +155,7 @@ func (b BoatAction) Check() bool {
 	// 存在monk且monster多于monk时，无效！
 	if (b.Monk > 0 && b.Monster > b.Monk) ||
 		(b.Monk == 0 && b.Monster == 0) ||
-		(b.Monk+b.Monster > 2) {
+		(b.Monk+b.Monster > BOAT_CAP) {
 		return false
 	}
 	return true
